@@ -4,8 +4,8 @@ import ErrorBoundaryFallbackComponent from "./ErrorBoundaryFallbackComponent";
 
 interface Props {
   children?: any,
-  fallbackComponent?: (error: Error, componentStack: string) => React.Component,
-  onError?: (error: Error, componentStack: string) => void,
+  showFallbackComponent?: (error: Error, componentStack: string) => boolean,
+  onErrorFallbackComponent?: (error: Error, componentStack: string) => React.Component,
 }
 
 
@@ -28,26 +28,27 @@ class ErrorBoundary extends React.Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
-    const { onError } = this.props;
-
-    if (typeof onError === 'function') {
-      try {
-        onError.call(this, error, info ? info.componentStack : '');
-      } catch (ignoredError) { }
-    }
     this.setState({ error, info });
   }
 
+  getFallbackComponent = (showFallbackComponent: boolean, error: Error, info: ErrorInfo, onErrorFallbackComponent: (error: Error, componentStack: string) => React.Component, children: any) => {
+    if (showFallbackComponent) {
+      onErrorFallbackComponent ? onErrorFallbackComponent(error, info ? info.componentStack : "") :
+        <ErrorBoundaryFallbackComponent error={error} info={info} />
+    }
+    return children
+  }
+
   render() {
-    const { children, fallbackComponent } = this.props;
+    const { children, onErrorFallbackComponent, showFallbackComponent } = this.props;
     const { error, info } = this.state;
 
-    if (error) {
+    if (error && showFallbackComponent && showFallbackComponent(error, info ? info.componentStack : "")) {
       return (
         <div>
-          {
-            fallbackComponent ? fallbackComponent(error, info ? info.componentStack : "") :
-              <ErrorBoundaryFallbackComponent error={error} info={info} />
+          {onErrorFallbackComponent
+            ? onErrorFallbackComponent(error, info ? info.componentStack : "") :
+            <ErrorBoundaryFallbackComponent error={error} info={info} />
           }
         </div>
       )
