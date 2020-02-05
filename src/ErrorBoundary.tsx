@@ -4,7 +4,7 @@ import ErrorBoundaryFallbackComponent from "./ErrorBoundaryFallbackComponent";
 
 interface Props {
   children?: any,
-  fallbackComponent: (error: Error, componentStack: string) => React.Component,
+  fallbackComponent?: (error: Error, componentStack: string) => React.Component,
   onError?: (error: Error, componentStack: string) => void,
 }
 
@@ -45,7 +45,10 @@ class ErrorBoundary extends React.Component<Props, State> {
     if (error) {
       return (
         <div>
-          {fallbackComponent(error, info ? info.componentStack : "")}
+          {
+            fallbackComponent ? fallbackComponent(error, info ? info.componentStack : "") :
+              <ErrorBoundaryFallbackComponent error={error} info={info} />
+          }
         </div>
       )
     }

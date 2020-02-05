@@ -1,5 +1,5 @@
 {
-  "name": "reason-error-boundary",
+  "name": "typescript-error-boundary",
   "version": "0.0.1",
   "description": "Binding for react error boundary",
   "main": "lib/index.js",
@@ -7,15 +7,15 @@
   "author": "karanPorter <karandeep.vohra@theporter.in>",
   "license": "MIT",
   "scripts": {
-    "build" : "tsc",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@types/react": "^16.9.19",
-    "@types/react-dom": "^16.9.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   }

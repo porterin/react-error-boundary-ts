@@ -15,9 +15,10 @@ class ErrorBoundaryFallBackComponent extends React.Component<Props, any> {
   }
   render() {
     const {error, info} = this.props
+
     return <div>
       <div>{String(error)}</div>
-      <div>{String(info)}</div>
+      <div>{String(info?.componentStack)}</div>
     </div>;
   }
 }
