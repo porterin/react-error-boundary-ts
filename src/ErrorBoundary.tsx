@@ -4,7 +4,7 @@ import ErrorBoundaryFallbackComponent from "./ErrorBoundaryFallbackComponent";
 
 interface Props {
   children?: any,
-  showFallbackComponent?: (error: Error, componentStack: string) => boolean,
+  handleError?: (error: Error, componentStack: string) => boolean,
   onErrorFallbackComponent?: (error: Error, componentStack: string) => React.Component,
 }
 
@@ -28,22 +28,17 @@ class ErrorBoundary extends React.Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
-    this.setState({ error, info });
-  }
-
-  getFallbackComponent = (showFallbackComponent: boolean, error: Error, info: ErrorInfo, onErrorFallbackComponent: (error: Error, componentStack: string) => React.Component, children: any) => {
-    if (showFallbackComponent) {
-      onErrorFallbackComponent ? onErrorFallbackComponent(error, info ? info.componentStack : "") :
-        <ErrorBoundaryFallbackComponent error={error} info={info} />
+    const { handleError } = this.props;
+    if (handleError && handleError(error, info ? info.componentStack : "")) {
+      this.setState({ error, info });
     }
-    return children
   }
 
   render() {
-    const { children, onErrorFallbackComponent, showFallbackComponent } = this.props;
+    const { children, onErrorFallbackComponent, handleError } = this.props;
     const { error, info } = this.state;
 
-    if (error && showFallbackComponent && showFallbackComponent(error, info ? info.componentStack : "")) {
+    if (error) {
       return (
         <div>
           {onErrorFallbackComponent

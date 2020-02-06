@@ -1,7 +1,7 @@
 {
-  "name": "typescript-error-boundary",
+  "name": "react-error-boundary-ts",
   "version": "0.0.1",
-  "description": "Binding for react error boundary",
+  "description": "React error boundary using typescript",
   "main": "lib/index.js",
   "repository": "https://github.com/porterin/reason-error-boundary.git",
   "author": "karanPorter <karandeep.vohra@theporter.in>",
